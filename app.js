@@ -3,26 +3,25 @@ const { RateLimiterMemory } = require('rate-limiter-flexible');
 const axios = require('axios');
 const HttpsProxyAgent = require('https-proxy-agent');
 const crypto = require('crypto');
+const env = require('./envi')
 
 // Configure your proxy settings
-const proxyHost = '127.0.0.1';
-const proxyPort = '7890';
 
-
+/*
 const proxyAgent = new HttpsProxyAgent(`http://${proxyHost}:${proxyPort}`);
+*/
 
-const openaiApiUrl = 'https://api.openai.com/v1/chat/completions';
-const openaiApiKey = '';
+
 
 
 
 const axiosInstance = axios.create({
-  baseURL: openaiApiUrl,
+  baseURL: env.openaiApiUrl,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${openaiApiKey}`,
+    'Authorization': `Bearer ${env.openaiApiKey}`,
   },
-  httpsAgent: proxyAgent,
+  //httpsAgent: proxyAgent,
 });
 
 
@@ -179,14 +178,14 @@ app.post('/wxapp/getHistoryMsg', (req, res) => {
   console.log(req.body)
 
   // 定义敏感词数组
-  const badWords = ['尼玛', '他妈的', '狗屎'];
+  //const badWords = ['尼玛', '他妈的', '狗屎'];
 
   // 使用正则表达式匹配敏感词，并将其替换为 ***
-  const regex = new RegExp(badWords.join('|'), 'gi');
-  const filteredMessage = message.replace(regex, '***');
+  //const regex = new RegExp(badWords.join('|'), 'gi');
+  //const filteredMessage = message.replace(regex, '***');
 
   const data = {
-    message: filteredMessage
+    message: []
   }
 
 
@@ -201,7 +200,7 @@ app.post('/wxapp/getHistoryMsg', (req, res) => {
 
 
 // Start server
-const port = process.env.PORT || 3000;
+const port = env.port || 9995;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
